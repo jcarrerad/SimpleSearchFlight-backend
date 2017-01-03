@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Airport code="MEX" name="Benito Juarez Intl. Airport" country="MEX"/>
+	<Airport code="CUN" name="Cancun Intl. Airport" country="MEX"/>
+	<Airport code="JFK" name="John F. Kennedy Intl. Airport" country="USA"/>
+</dataset>
