@@ -12,12 +12,12 @@ You will need the following things properly installed on your computer.
 * mvn clean install
 
 ## Running / Development
-mvn tomcat7:run
+* mvn tomcat7:run
 * Visit your app at http://localhost:8080
 
 ## Rest Resources
 Airports:
-http://localhost:8080/flightsearch/airports
+* http://localhost:8080/flightsearch/airports
 
 Flights:
-http://localhost:8080/flightsearch/flights?origin={ISO "ALPHA-3 Code}&destination={ISO "ALPHA-3 Code}&date={yyyy-mm-dd}
+* http://localhost:8080/flightsearch/flights?origin={ISO "ALPHA-3 Code}&destination={ISO "ALPHA-3 Code}&date={yyyy-mm-dd}
