@@ -2,12 +2,20 @@ package org.flightsearch.remote;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.flightsearch.domain.Flight;
+import org.flightsearch.remote.model.RemoteFlight;
+import org.flightsearch.remote.model.RemoteFlightList;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,25 +25,25 @@ public class DummyFlightFactory {
 	
 	
 	
-	public static final List<String> AIRLINES = asList(
+	public static final List<String> AIRLINES = Arrays.asList(
 		    "American Airlines",
 		    "Delta Airlines",
 		    "Continental Airlines",
 		    "Aeromexico"
 	    );
 	
-	public static final List<String> FLIGHT_CODES = asList(
+	public static final List<String> FLIGHT_CODES = Arrays.asList(
 		    "A501",
 		    "D604",
 		    "C301",
 		    "A504"
 	    );
 	
-	public static final List<Integer> STOPS = asList(
+	public static final List<Integer> STOPS = Arrays.asList(
 		    0,1,2,1
 	    );
 	
-	public static final List<String> PRICES = asList(
+	public static final List<String> PRICES = Arrays.asList(
 		    "521",
 		    "480",
 		    "420",
@@ -43,21 +51,21 @@ public class DummyFlightFactory {
 	    );
 	
 	
-	public static final List<String> DEPARTURE_TIME = asList(
+	public static final List<String> DEPARTURE_TIME = Arrays.asList(
 		    "05:20",
 		    "12:45",
 		    "19:35",
 		    "22:00"
 	    );
 	
-	public static final List<String> FLIGHT_TIME = asList(
+	public static final List<String> FLIGHT_TIME = Arrays.asList(
 		    "03:40",
 		    "04:10",
 		    "04:50",
 		    "03:50"
 	    );
 	
-	public static final List<String> AIRLINE_LOGO = asList(
+	public static final List<String> AIRLINE_LOGO = Arrays.asList(
 		    "http://netdna.webdesignerdepot.com/uploads/2009/03/aa2.gif",
 		    "http://logok.org/wp-content/uploads/2014/02/Delta-Arrow-logo.png",
 		    "http://fontmeme.com/images/Continental-Airlines-Logo.jpg",
@@ -80,6 +88,26 @@ public class DummyFlightFactory {
 		}
 		
 		return flights;
+	}
+	
+	public RemoteFlightList createRemoteFlightList(String origin, String destination, Date departure){
+		RemoteFlightList flightList = new RemoteFlightList();
+		List<RemoteFlight> flights = new ArrayList<RemoteFlight>();
+		
+		for(int i = 0; i < AIRLINES.size(); i++){
+			Date departureTemp = new Date(departure.getTime());
+			RemoteFlight flight = createRemoteFlight(i);
+			flight.setOrigin(origin);
+			flight.setDestination(destination);
+			departureTemp = addDepartureTime(departureTemp, i);
+			flight.setDeparture(getGregorianCalendarOfDate(departureTemp));
+			flight.setArrival(getGregorianCalendarOfDate((calculateArrival(departureTemp, i))));
+			
+			flights.add(flight);
+		}
+		flightList.setFlights(flights);
+		
+		return flightList;
 	}
 	
 	private Date addDepartureTime(Date departure, int index){
@@ -121,13 +149,29 @@ public class DummyFlightFactory {
 		return flight;
 	}
 	
-
-	private static <T> List<T> asList(T ... items){
-		List<T> list = new ArrayList<T>();
-		if(items != null && items.length > 0)
-			for(T item : items)
-				list.add(item);
-		return list;
+	private RemoteFlight createRemoteFlight(int index){
+		RemoteFlight flight = new RemoteFlight();
+		flight.setFlightCode(FLIGHT_CODES.get(index));
+		flight.setAirline(AIRLINES.get(index));
+		flight.setStops(STOPS.get(index));
+		flight.setPrice(PRICES.get(index));
+		flight.setSeatClass(SEAT_CLASS);
+		flight.setAirlineLogo(AIRLINE_LOGO.get(index));
+		
+		return flight;
 	}
-
+	
+	// conversi?n de Date a XMLGregorianCalendar
+    private XMLGregorianCalendar getGregorianCalendarOfDate(Date date) {
+        GregorianCalendar gregorianCalendario = new GregorianCalendar();
+        XMLGregorianCalendar xmlGregorianCalendar = null;
+        gregorianCalendario.setTime(date);
+        try {
+            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendario);
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
+        return xmlGregorianCalendar;
+    }
+	
 }

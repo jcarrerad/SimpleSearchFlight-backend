@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.flightsearch.domain.Flight;
-import org.flightsearch.remote.IRemoteFlightSearch;
+import org.flightsearch.remote.proxy.IRemoteFlightSearch;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

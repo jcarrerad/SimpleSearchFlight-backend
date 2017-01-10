@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.flightsearch.domain.Flight;
-import org.flightsearch.remote.IRemoteFlightSearch;
+import org.flightsearch.remote.proxy.IRemoteFlightSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
