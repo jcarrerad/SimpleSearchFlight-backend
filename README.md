@@ -1,14 +1,23 @@
 # SimpleSearchFlight-backend
 Backend Rest Services for Simple Search Flight Demo
 
-To install and run tests:
-mvn clean install
+## Prerequisites
 
-To deploy to embedded Tomcat:
-mvn tomcat7:run
+You will need the following things properly installed on your computer.
+* [Java 7] (www.oracle.com) 
+* [Maven] (https://maven.apache.org/)
+* [MySQL] (https://dev.mysql.com)
 
-Airports REST Resource:
-http://localhost:8080/flightsearch/airports
+## Build and Tests
+* mvn clean install
 
-Flights REST Resource:
-http://localhost:8080/flightsearch/flights?origin={ISO "ALPHA-3 Code}&destination={ISO "ALPHA-3 Code}&date={yyyy-mm-dd}
+## Running / Development
+* mvn tomcat7:run
+* Visit your app at http://localhost:8080
+
+## Rest Resources
+Airports:
+* http://localhost:8080/flightsearch/airports
+
+Flights:
+* http://localhost:8080/flightsearch/flights?origin={ISO "ALPHA-3 Code}&destination={ISO "ALPHA-3 Code}&date={yyyy-mm-dd}
