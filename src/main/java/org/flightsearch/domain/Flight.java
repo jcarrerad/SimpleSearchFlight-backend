@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName(value = "flight")
@@ -22,6 +23,8 @@ public class Flight {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ssZ")
 	private Date arrival;
 	private int stops;
+	@JsonProperty("aircraft")
+	private Aircraft aircraft;
 	private BigDecimal price;
 	
 	
@@ -124,5 +127,15 @@ public class Flight {
 		}
 		return time;
 	}
+
+	public Aircraft getAircraft() {
+		return aircraft;
+	}
+
+	public void setAircraft(Aircraft aircraft) {
+		this.aircraft = aircraft;
+	}
+
+	
 
 }

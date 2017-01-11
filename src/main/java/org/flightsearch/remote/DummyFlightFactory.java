@@ -14,6 +14,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.flightsearch.domain.Flight;
+import org.flightsearch.remote.model.RemoteAircraft;
 import org.flightsearch.remote.model.RemoteFlight;
 import org.flightsearch.remote.model.RemoteFlightList;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DummyFlightFactory {
 	
-	private static final String SEAT_CLASS ="Economy / Coach";
+	private static final String SEAT_CLASS ="Economy";
 	
 	
 	
@@ -65,6 +66,20 @@ public class DummyFlightFactory {
 		    "03:50"
 	    );
 	
+	public static final List<String> AIRCRAFT_TYPE = Arrays.asList(
+		    "BOEING 727",
+		    "AIRBUS A318",
+		    "BOEING 747",
+		    "AIRBUS A320"
+	    );
+	
+	public static final List<Integer> AIRCRAFT_CAPACITY = Arrays.asList(
+		    185,
+		    205,
+		    220,
+		    259
+	    );
+	
 	public static final List<String> AIRLINE_LOGO = Arrays.asList(
 		    "http://netdna.webdesignerdepot.com/uploads/2009/03/aa2.gif",
 		    "http://logok.org/wp-content/uploads/2014/02/Delta-Arrow-logo.png",
@@ -102,6 +117,7 @@ public class DummyFlightFactory {
 			departureTemp = addDepartureTime(departureTemp, i);
 			flight.setDeparture(getGregorianCalendarOfDate(departureTemp));
 			flight.setArrival(getGregorianCalendarOfDate((calculateArrival(departureTemp, i))));
+			flight.setAircraft(createAircraft(i));
 			
 			flights.add(flight);
 		}
@@ -147,6 +163,13 @@ public class DummyFlightFactory {
 		flight.setAirlineLogo(AIRLINE_LOGO.get(index));
 		
 		return flight;
+	}
+	
+	private RemoteAircraft createAircraft(int index){
+		RemoteAircraft aircraft = new RemoteAircraft();
+		aircraft.setType(AIRCRAFT_TYPE.get(index));
+		aircraft.setCapacity(AIRCRAFT_CAPACITY.get(index));
+		return aircraft;
 	}
 	
 	private RemoteFlight createRemoteFlight(int index){

@@ -11,7 +11,9 @@ import java.util.Stack;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.flightsearch.domain.Aircraft;
 import org.flightsearch.domain.Flight;
+import org.flightsearch.remote.model.RemoteAircraft;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -24,9 +26,10 @@ public class FlightParserHandler extends DefaultHandler {
     private Stack<String> elementStack = new Stack<String>();
     
     private static final String FLIGHT_ELEMENT = "flight";
+    private static final String AIRCRAFT_ELEMENT = "aircraft";
  
     //As we complete one user block in XML, we will push the User instance in userList
-    private Stack<Flight> objectStack = new Stack<Flight>();
+    private Stack<Object> objectStack = new Stack<Object>();
  
    
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
@@ -37,10 +40,16 @@ public class FlightParserHandler extends DefaultHandler {
         //If this is start of 'flight' element then prepare a new Flight instance and push it in object stack
         if (FLIGHT_ELEMENT.equals(qName))
         {
-            //New User instance
             Flight flight = new Flight();
  
             this.objectStack.push(flight);
+        }
+        
+        if (AIRCRAFT_ELEMENT.equals(qName))
+        {
+            Aircraft aircraft = new Aircraft();
+ 
+            this.objectStack.push(aircraft);
         }
     }
  
@@ -52,8 +61,15 @@ public class FlightParserHandler extends DefaultHandler {
         //User instance has been constructed so pop it from object stack and push in userList
         if (FLIGHT_ELEMENT.equals(qName))
         {
-            Flight object = this.objectStack.pop();
+            Flight object = (Flight)this.objectStack.pop();
             this.flights.add(object);
+        }
+        
+        if (AIRCRAFT_ELEMENT.equals(qName))
+        {
+        	Aircraft aircraft = (Aircraft)this.objectStack.pop();
+        	Flight flight = (Flight)this.objectStack.peek();
+        	flight.setAircraft(aircraft);
         }
     }
  
@@ -70,6 +86,7 @@ public class FlightParserHandler extends DefaultHandler {
         }
         
         Flight flight = null;
+        Aircraft aircraft = null;
  
         //handle the value based on to which element it belongs
         if ("airline".equals(currentElement()))
@@ -121,6 +138,16 @@ public class FlightParserHandler extends DefaultHandler {
         {
         	flight = (Flight) this.objectStack.peek();
         	flight.setArrival(convertStringToDate(value));
+        }
+        else if ("type".equals(currentElement()))
+        {
+        	aircraft = (Aircraft) this.objectStack.peek();
+        	aircraft.setType(value);
+        }
+        else if ("capacity".equals(currentElement()))
+        {
+        	aircraft = (Aircraft) this.objectStack.peek();
+        	aircraft.setCapacity(Integer.valueOf(value));
         }
     }
     

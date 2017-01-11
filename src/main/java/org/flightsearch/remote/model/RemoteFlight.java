@@ -1,5 +1,6 @@
 package org.flightsearch.remote.model;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
@@ -17,6 +18,7 @@ public class RemoteFlight {
 	private XMLGregorianCalendar arrival;
 	private int stops;
 	private String price;
+	private RemoteAircraft aircraft;
 	
 	public String getId() {
 		return id;
@@ -83,6 +85,13 @@ public class RemoteFlight {
 	}
 	public void setPrice(String price) {
 		this.price = price;
+	}
+	@XmlElement(name="aircraft")
+	public RemoteAircraft getAircraft() {
+		return aircraft;
+	}
+	public void setAircraft(RemoteAircraft aircraft) {
+		this.aircraft = aircraft;
 	}
 	
 	
